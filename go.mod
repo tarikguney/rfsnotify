@@ -1,1 +1,1 @@
-module github.com/tarikguney/recursive-fsnotify
+module github.com/tarikguney/rfsnotify
