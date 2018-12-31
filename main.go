@@ -21,13 +21,20 @@ func (w *Watcher) Include(path ...string){
 }
 
 func (w *Watcher) Exclude(path ...string){
-	for value := range path{
-		for v,i := range w.filePaths{
-			/*if  value == v {
-				w.filePaths[]
-			}*/
+	var indices = []int{}
+	for _, value := range path{
+		for i,v := range w.filePaths{
+			if  value == v {
+				indices = append(indices, i)
+			}
 		}
 	}
 
-	// todo remove paths from w.filePaths
+	for i := range indices{
+		delete(w.filePaths, indices[i])
+	}
+}
+
+func delete(paths []string, index int){
+	paths = append(paths[:index], paths[index+1:]...)
 }
