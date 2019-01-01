@@ -42,6 +42,17 @@ func TestDeletePath_IndexIsLenMinusOne_DeletesLastElement(t *testing.T) {
 	}
 }
 
+func TestInclude_AddingPaths_WorksProperly(t *testing.T) {
+	var watcher = &Watcher{}
+	watcher.Include("test1", "test2")
+	if len(watcher.filePaths) == 2{
+		t.Error("len(watcher.filePaths) must be 2")
+	}
+	if watcher.filePaths[0] == "test1" && watcher.filePaths[1] == "test2"{
+		t.Error("watcher.filesPaths does not have correct items.")
+	}
+}
+
 func getSamplePaths() []string{
 	return []string{"hello", "world", "mars"}
 }
