@@ -13,4 +13,6 @@ Since this package is still under development, the API surface may change as the
 ## Note
 This project is still under development and if you like you can watch the all of the live streams during which this package has been actively developed.
 
+Watch the development series here: https://www.youtube.com/watch?v=_bePpkKfU5s&list=PL_Z0TaFYSF3J8bCnGTIdZ_YgSH2THmzZt
+
 Developed by @tarikguney with <3
