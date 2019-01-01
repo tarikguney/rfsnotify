@@ -1,5 +1,7 @@
 package rfsnotify
 
+import "fmt"
+
 type Event int
 
 const(
@@ -21,7 +23,7 @@ func (w *Watcher) Include(path ...string){
 }
 
 func (w *Watcher) Exclude(path ...string){
-	var indices = []int{}
+	var indices = make([]int, 5)
 	for _, value := range path{
 		for i,v := range w.filePaths{
 			if  value == v {
@@ -31,10 +33,18 @@ func (w *Watcher) Exclude(path ...string){
 	}
 
 	for i := range indices{
-		delete(w.filePaths, indices[i])
+		deletePath(w.filePaths, indices[i])
 	}
 }
 
-func delete(paths []string, index int){
-	paths = append(paths[:index], paths[index+1:]...)
+func deletePath(paths []string, index int) []string {
+	if index > len(paths) -1 {
+		panic(fmt.Sprintf("index %v is bigger than the size of the paths slice!", index))
+	}
+
+	if index < len(paths) -1 {
+		return append(paths[:index], paths[index+1:]...)
+	}
+
+	return paths[:index]
 }
