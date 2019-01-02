@@ -1,0 +1,12 @@
+language: go
+
+go:
+  - 1.11
+
+install:
+ - go get github.com/rfsnotify/rfsnotify
+
+script:
+ - go vet;
+ - go install;
+ - go test -v;
