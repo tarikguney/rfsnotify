@@ -1,5 +1,7 @@
 # R-FSNotify
 
+[![Build Status](https://travis-ci.org/tarikguney/rfsnotify.svg?branch=master)](https://travis-ci.org/tarikguney/rfsnotify)
+
 > This project is still under development and its API is not stable. Please use it with caution or wait until this message is removed and the first version is released.
 
 A recursive file watcher package based on `github.com/fsnotify/fsnotify`.
