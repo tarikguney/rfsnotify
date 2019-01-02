@@ -7,10 +7,10 @@ import (
 type Event int
 
 const(
-	Delete Event = 0
-	Create Event = 1
-	Rename Event = 2
-	Write Event = 3
+	Delete Event = iota
+	Create
+	Rename
+	Write
 )
 
 type Watcher struct {
