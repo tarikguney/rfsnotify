@@ -17,18 +17,15 @@ type Watcher struct {
 	Path string
 	Recursive bool
 	Events []Event
-	filePaths []string
+	filePaths map[string]bool
 }
 
 func (w *Watcher) Include(path ...string){
-	for _,existingPath := range w.filePaths {
-		for _, newPath := range path{
-			if existingPath == newPath{
-				return
-			}
+	for _,  newPath := range path {
+		if !w.filePaths[newPath]{
+			w.filePaths[newPath] = true
 		}
 	}
-	w.filePaths = append(w.filePaths, path...)
 }
 
 func (w *Watcher) Exclude(path ...string){
