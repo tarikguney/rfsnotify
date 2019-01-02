@@ -1,7 +1,6 @@
 # R-FSNotify
 
 [![Build Status](https://travis-ci.org/tarikguney/rfsnotify.svg?branch=master)](https://travis-ci.org/tarikguney/rfsnotify)
-[![Coverage Status](https://coveralls.io/repos/github/tarikguney/rfsnotify/badge.svg?branch=master)](https://coveralls.io/github/tarikguney/rfsnotify?branch=master)
 
 > This project is still under development and its API is not stable. Please use it with caution or wait until this message is removed and the first version is released.
 
