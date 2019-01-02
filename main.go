@@ -21,6 +21,13 @@ type Watcher struct {
 }
 
 func (w *Watcher) Include(path ...string){
+	for _,existingPath := range w.filePaths {
+		for _, newPath := range path{
+			if existingPath == newPath{
+				return
+			}
+		}
+	}
 	w.filePaths = append(w.filePaths, path...)
 }
 
