@@ -5,8 +5,12 @@ go:
 
 install:
  - go get github.com/fsnotify/fsnotify
+ - go get golang.org/x/tools/cmd/cover
+ - go get github.com/mattn/goveralls
 
 script:
  - go vet;
  - go install;
  - go test -v;
+ - go test -v -covermode=count -coverprofile=coverage.out
+ - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci -repotoken $COVERALLS_TOKEN
