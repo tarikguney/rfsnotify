@@ -4,7 +4,6 @@ import (
 	"testing"
 )
 
-
 func TestInclude_AddingPaths_WorksProperly(t *testing.T) {
 	var watcher = &Watcher{}
 	watcher.Include("test1", "test2")
@@ -23,7 +22,7 @@ func TestInclude_AddingNothing_ReturnsNil(t *testing.T) {
 	}
 }
 
-func TestExclude_RemovingExistingItems_ItemsRemoved(t *testing.T){
+func TestExclude_RemovingExistingItems_ItemsRemoved(t *testing.T) {
 	var watcher = new(Watcher)
 	watcher.Include("file1.txt", "file2.txt", "file3.txt")
 	watcher.Exclude("file2.txt")
@@ -32,7 +31,7 @@ func TestExclude_RemovingExistingItems_ItemsRemoved(t *testing.T){
 		t.Error("len(watcher.filePaths) must be 2")
 	}
 
-	if !watcher.filePaths["file3.txt"]{
+	if !watcher.filePaths["file3.txt"] {
 		t.Error("watcher.filePaths[1] must be file3.txt")
 	}
 }
@@ -47,13 +46,12 @@ func TestExclude_RemovingNonExistingItem_SliceRemainedTheSame(t *testing.T) {
 	}
 }
 
-func  TestInclude_AddingDuplicateItem_DuplicateItemsNotAdded( t *testing.T) {
+func TestInclude_AddingDuplicateItem_DuplicateItemsNotAdded(t *testing.T) {
 	var watcher Watcher
 	watcher.Include("file1.txt")
 	watcher.Include("file1.txt")
 
-	if len(watcher.filePaths) != 1{
+	if len(watcher.filePaths) != 1 {
 		t.Error("len(watcher.filePaths) must be 1")
 	}
 }
-

@@ -2,7 +2,7 @@ package rfsnotify
 
 type Event int
 
-const(
+const (
 	Delete Event = iota
 	Create
 	Rename
@@ -10,24 +10,24 @@ const(
 )
 
 type Watcher struct {
-	Path string
+	Path      string
 	Recursive bool
-	Events []Event
+	Events    []Event
 	filePaths map[string]bool
 }
 
-func (w *Watcher) Include(paths ...string){
-	if w.filePaths == nil{
+func (w *Watcher) Include(paths ...string) {
+	if w.filePaths == nil {
 		w.filePaths = make(map[string]bool)
 	}
-	for _,  newPath := range paths {
-		if !w.filePaths[newPath]{
+	for _, newPath := range paths {
+		if !w.filePaths[newPath] {
 			w.filePaths[newPath] = true
 		}
 	}
 }
 
-func (w *Watcher) Exclude(paths ...string){
+func (w *Watcher) Exclude(paths ...string) {
 	for _, path := range paths {
 		delete(w.filePaths, path)
 	}
