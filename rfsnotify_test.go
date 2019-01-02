@@ -60,6 +60,20 @@ func TestInclude_AddingNothing_ReturnsNil(t *testing.T) {
 	}
 }
 
+func TestExclude_RemovingExistingItems_ItemsRemoved(t *testing.T){
+	var watcher = new(Watcher)
+	watcher.Include("file1.txt", "file2.txt", "file3.txt")
+	watcher.Exclude("file2.txt")
+
+	if len(watcher.filePaths) != 2 {
+		t.Error("len(watcher.filePaths) must be 2")
+	}
+
+	if watcher.filePaths[1] != "file3.txt"{
+		t.Error("watcher.filePaths[1] must be file3.txt")
+	}
+}
+
 func getSamplePaths() []string {
 	return []string{"hello", "world", "mars"}
 }
