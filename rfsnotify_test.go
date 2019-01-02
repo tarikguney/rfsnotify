@@ -74,6 +74,16 @@ func TestExclude_RemovingExistingItems_ItemsRemoved(t *testing.T){
 	}
 }
 
+func TestExclude_RemovingNonExistingItem_SliceRemainedTheSame(t *testing.T) {
+	var watcher Watcher
+	watcher.Include("file1.txt", "file2.txt")
+	watcher.Exclude("file3.txt")
+
+	if len(watcher.filePaths) != 2 {
+		t.Error("len(watcher.filePaths) must be 2")
+	}
+}
+
 func getSamplePaths() []string {
 	return []string{"hello", "world", "mars"}
 }
