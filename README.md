@@ -12,6 +12,9 @@ R-FsNotify is the solution for that problem. It automatically watches all of you
 
 Since this package is still under development, the API surface may change as the new requirements come up. Therefore, until the first release is fully published, use this library with caution.
 
+## Unit Tests
+This project is covered by various unit tests in the `rfsnotify_test.go` file. My intention is to keep it 100% covered. In case you would like to create PR for this project, please make sure that your code does not reduce the test coverage score. However, I am aware of the fact that no everything can be unit tested, but it still a crucial practice to keep unit tests in mind while contributing to this project.
+
 ![logo](recursive-fsnotify-thumbnail.png)
 
 ## Note
