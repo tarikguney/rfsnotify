@@ -4,7 +4,7 @@ go:
   - 1.11
 
 install:
- - go get github.com/rfsnotify/rfsnotify
+ - go get github.com/fsnotify/fsnotify
 
 script:
  - go vet;
