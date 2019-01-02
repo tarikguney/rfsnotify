@@ -2,7 +2,7 @@
 
 A recursive file watcher package based on `github.com/fsnotify/fsnotify`.
 
-Unforunately, `fsnotify` does not have recursive watching capability, and you need to write your way to find all the sub-folders and files underneath and add them by using its `Add()` method.
+Unfortunately, `fsnotify` does not have recursive watching capability, and you need to write your way to find all the sub-folders and files underneath and add them by using its `Add()` method.
 
 R-FsNotify is the solution for that problem. It automatically watches all of your files under a directory.
 
