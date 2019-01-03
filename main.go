@@ -29,9 +29,6 @@ func (w *Watcher) Include(paths ...string) {
 		if !w.filePaths[newPath] {
 			w.filePaths[newPath] = true
 		}
-		if !exists {
-			w.filePaths = append(w.filePaths, newPath)
-		}
 	}
 }
 

@@ -51,19 +51,19 @@ func TestExclude_RemovingNonExistingItem_SliceRemainedTheSame(t *testing.T) {
 
 func TestNewWatcher_GivenDirectory_ReturnsAllFiles(t *testing.T) {
 	dir, err := ioutil.TempDir("", "example")
-	if err != nil{
+	if err != nil {
 		t.Fatal("cannot create a temp directory")
 	}
 
 	defer os.RemoveAll(dir) //clean up
 
-	err = os.MkdirAll(path.Join(dir, "dir1","dir2", "dir3"), os.ModePerm)
+	err = os.MkdirAll(path.Join(dir, "dir1", "dir2", "dir3"), os.ModePerm)
 
-	if err != nil{
+	if err != nil {
 		t.Fatal("cannot create the temp directories")
 	}
 
-	var tempFiles  = []string {path.Join(dir, "dir1", "file1"),
+	var tempFiles = []string{path.Join(dir, "dir1", "file1"),
 		path.Join(dir, "dir1", "file2"),
 		path.Join(dir, "dir1", "dir2", "file3"),
 		path.Join(dir, "dir1", "dir2", "file4"),
@@ -71,16 +71,15 @@ func TestNewWatcher_GivenDirectory_ReturnsAllFiles(t *testing.T) {
 		path.Join(dir, "dir1", "dir2", "dir3", "file6"),
 	}
 
-	for _, fileName := range tempFiles{
+	for _, fileName := range tempFiles {
 		err := ioutil.WriteFile(fileName, []byte("hello world"), os.ModePerm)
-		if err != nil{
+		if err != nil {
 			t.Error("cannot create file " + fileName)
 		}
 	}
 
 	watcher := NewWatcher(dir, true, nil)
-	t.Log(watcher.filePaths)
-	if len(watcher.filePaths) != 6{
+	if len(watcher.filePaths) != 6 {
 		t.Error("watcher didn't find all the files.")
 	}
 }
@@ -91,7 +90,7 @@ func TestInclude_AddingDuplicateItem_DuplicateItemsNotAdded(t *testing.T) {
 	watcher.Include("file1.txt")
 	watcher.Include("file2.txt")
 
-	if len(watcher.filePaths) != 1 {
-		t.Error("len(watcher.filePaths) must be 1")
+	if len(watcher.filePaths) != 2 {
+		t.Error("len(watcher.filePaths) must be 2")
 	}
 }
