@@ -77,7 +77,6 @@ func initFilePaths(w *Watcher) {
 func getAllFiles(dirPath string) []string {
 	var files []string
 	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
-		// todo check this logic later.
 		if !info.IsDir() {
 			files = append(files, path)
 		}
