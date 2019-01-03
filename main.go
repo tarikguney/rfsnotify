@@ -20,9 +20,9 @@ type Watcher struct {
 	Path      string
 	Recursive bool
 	Events    []Event
+	// todo think about the usefulness of this backing slice. Because we can use fsnotify.Watcher internal backing slice.
 	filePaths map[string]bool
 	internalWatcher *fsnotify.Watcher
-	newFilePaths []string
 }
 
 // Adds new files to the internal watch list to track.
@@ -40,8 +40,6 @@ func (w *Watcher) Include(paths ...string) {
 			w.filePaths[newPath] = true
 			// todo handle error
 			w.internalWatcher.Add(newPath)
-			// keeping the recently added new file paths
-			w.newFilePaths = append(w.newFilePaths, newPath)
 		}
 	}
 }
@@ -50,17 +48,14 @@ func (w *Watcher) Include(paths ...string) {
 func (w *Watcher) Exclude(paths ...string) {
 	for _, path := range paths {
 		delete(w.filePaths, path)
+		// todo  handle the error
+		w.internalWatcher.Remove(path)
 	}
 }
 
 // Finds newly added files in given path.
 func (w *Watcher) Refresh() {
-	w.newFilePaths = nil
 	initFilePaths(w)
-	for _, path := range w.newFilePaths {
-		// todo handle error here.
-		w.internalWatcher.Add(path)
-	}
 }
 
 // Creates a new Watcher object and initializes the internal watch list
