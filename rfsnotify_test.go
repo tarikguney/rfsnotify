@@ -61,9 +61,9 @@ func TestNewWatcher_GivenDirectory_ReturnsAllFiles(t *testing.T) {
 func TestNewWatcher_GivenDirectoryAndInclude_ReturnsAllFiles(t *testing.T) {
 	dir := setupWatchedDirectory(t)
 	watcher := NewWatcher(dir, true, nil)
-	watcher.Include("includedFile1.txt")
+	watcher.Include("includedFile1.txt", "includedFile1.txt")
 	defer os.RemoveAll(dir)
-	
+
 	if len(watcher.filePaths) != 7 {
 		t.Error("len(watcher.filePaths) must be 7")
 	}
@@ -110,5 +110,25 @@ func TestInclude_AddingDuplicateItem_DuplicateItemsNotAdded(t *testing.T) {
 
 	if len(watcher.filePaths) != 2 {
 		t.Error("len(watcher.filePaths) must be 2")
+	}
+}
+
+func TestRefresh_AddingNewFile_GetAllFile(t *testing.T) {
+	dir := setupWatchedDirectory(t)
+	watcher := NewWatcher(dir, true, nil)
+	defer os.RemoveAll(dir)
+
+	if len(watcher.filePaths) != 6 {
+		t.Error("len(watcher.filePaths) must be 7")
+	}
+
+	err := ioutil.WriteFile(path.Join(dir, "file_new"), []byte("hello again"), os.ModePerm)
+	if err != nil{
+		t.Error(err)
+	}
+
+	watcher.Refresh()
+	if len(watcher.filePaths) != 7{
+		t.Error("Refresh method is not discovering the new files")
 	}
 }
