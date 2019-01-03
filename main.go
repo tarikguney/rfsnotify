@@ -1,7 +1,6 @@
 package rfsnotify
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -19,7 +18,27 @@ type Watcher struct {
 	Path      string
 	Recursive bool
 	Events    []Event
-	filePaths []string
+	filePaths map[string]bool
+}
+
+func (w *Watcher) Include(paths ...string) {
+	if w.filePaths == nil {
+		w.filePaths = make(map[string]bool)
+	}
+	for _, newPath := range paths {
+		if !w.filePaths[newPath] {
+			w.filePaths[newPath] = true
+		}
+		if !exists {
+			w.filePaths = append(w.filePaths, newPath)
+		}
+	}
+}
+
+func (w *Watcher) Exclude(paths ...string) {
+	for _, path := range paths {
+		delete(w.filePaths, path)
+	}
 }
 
 func NewWatcher(path string, recursive bool, events []Event) *Watcher {
@@ -60,40 +79,4 @@ func walkDir(dirPath string) []string {
 		panic(err)
 	}
 	return files
-}
-
-func (w *Watcher) Include(paths ...string) {
-	for _, newPath := range paths {
-		var exists bool
-		for _, existingPath := range w.filePaths {
-			if exists = existingPath == newPath; exists {
-				break
-			}
-		}
-		if !exists {
-			w.filePaths = append(w.filePaths, newPath)
-		}
-	}
-}
-
-func (w *Watcher) Exclude(path ...string) {
-	for _, value := range path {
-		for i, v := range w.filePaths {
-			if value == v {
-				w.filePaths = deletePath(w.filePaths, i)
-			}
-		}
-	}
-}
-
-func deletePath(paths []string, index int) []string {
-	if index > len(paths)-1 {
-		panic(fmt.Sprintf("index %v is bigger than the size of the paths slice!", index))
-	}
-
-	if index < len(paths)-1 {
-		return append(paths[:index], paths[index+1:]...)
-	}
-
-	return paths[:index]
 }
