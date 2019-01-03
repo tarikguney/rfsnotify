@@ -21,6 +21,7 @@ type Watcher struct {
 	filePaths map[string]bool
 }
 
+// Adds new files to the internal watch list to track.
 func (w *Watcher) Include(paths ...string) {
 	if w.filePaths == nil {
 		w.filePaths = make(map[string]bool)
@@ -32,12 +33,20 @@ func (w *Watcher) Include(paths ...string) {
 	}
 }
 
+// Excludes paths from internal watch list.
 func (w *Watcher) Exclude(paths ...string) {
 	for _, path := range paths {
 		delete(w.filePaths, path)
 	}
 }
 
+// Finds newly added files in given path.
+func (w *Watcher) Refresh() {
+	initFilePaths(w)
+}
+
+// Creates a new Watcher object and initializes the internal watch list
+// based on the given path.
 func NewWatcher(path string, recursive bool, events []Event) *Watcher {
 	var watcher = &Watcher{
 		Path:      path,
@@ -45,7 +54,13 @@ func NewWatcher(path string, recursive bool, events []Event) *Watcher {
 		Events:    events,
 	}
 
-	givenFileInfo, err := os.Stat(path)
+	initFilePaths(watcher)
+
+	return watcher
+}
+
+func initFilePaths(w *Watcher) {
+	givenFileInfo, err := os.Stat(w.Path)
 	if err != nil {
 		panic(err)
 	}
@@ -54,13 +69,11 @@ func NewWatcher(path string, recursive bool, events []Event) *Watcher {
 
 	switch mode := givenFileInfo.Mode(); {
 	case mode.IsDir():
-		allFilePaths = getAllFiles(path)
-		watcher.Include(allFilePaths...)
+		allFilePaths = getAllFiles(w.Path)
+		w.Include(allFilePaths...)
 	case mode.IsRegular():
-		watcher.Include(path)
+		w.Include(w.Path)
 	}
-
-	return watcher
 }
 
 func getAllFiles(dirPath string) []string {
