@@ -45,16 +45,16 @@ func NewWatcher(path string, recursive bool, events []Event) *Watcher {
 		Events:    events,
 	}
 
-	fi, err := os.Stat(path)
+	givenFileInfo, err := os.Stat(path)
 	if err != nil {
 		panic(err)
 	}
 
 	var allFilePaths []string
 
-	switch mode := fi.Mode(); {
+	switch mode := givenFileInfo.Mode(); {
 	case mode.IsDir():
-		allFilePaths = walkDir(path)
+		allFilePaths = getAllFiles(path)
 		watcher.Include(allFilePaths...)
 	case mode.IsRegular():
 		watcher.Include(path)
@@ -63,7 +63,7 @@ func NewWatcher(path string, recursive bool, events []Event) *Watcher {
 	return watcher
 }
 
-func walkDir(dirPath string) []string {
+func getAllFiles(dirPath string) []string {
 	var files []string
 	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
 		// todo check this logic later.
