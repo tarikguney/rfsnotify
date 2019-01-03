@@ -47,15 +47,13 @@ func (w *Watcher) Refresh() {
 
 // Creates a new Watcher object and initializes the internal watch list
 // based on the given path.
-func NewWatcher(path string, recursive bool, events []Event) *Watcher {
+func NewWatcher(path string, events []Event) *Watcher {
 	var watcher = &Watcher{
 		Path:      path,
-		Recursive: recursive,
 		Events:    events,
 	}
 
 	initFilePaths(watcher)
-
 	return watcher
 }
 
