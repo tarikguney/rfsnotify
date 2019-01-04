@@ -52,7 +52,7 @@ func TestExclude_RemovingNonExistingItem_SliceRemainedTheSame(t *testing.T) {
 func TestNewWatcher_GivenDirectory_ReturnsAllFiles(t *testing.T) {
 	dir := setupWatchedDirectory(t)
 	defer os.RemoveAll(dir)
-	watcher := NewWatcher(dir, nil)
+	watcher := NewWatcher(dir)
 	if len(watcher.filePaths) != 6 {
 		t.Error("watcher didn't find all the files.")
 	}
@@ -60,7 +60,7 @@ func TestNewWatcher_GivenDirectory_ReturnsAllFiles(t *testing.T) {
 
 func TestNewWatcher_GivenDirectoryAndInclude_ReturnsAllFiles(t *testing.T) {
 	dir := setupWatchedDirectory(t)
-	watcher := NewWatcher(dir, nil)
+	watcher := NewWatcher(dir)
 	watcher.Include("includedFile1.txt", "includedFile1.txt")
 	defer os.RemoveAll(dir)
 
@@ -115,7 +115,7 @@ func TestInclude_AddingDuplicateItem_DuplicateItemsNotAdded(t *testing.T) {
 
 func TestRefresh_AddingNewFile_GetAllFile(t *testing.T) {
 	dir := setupWatchedDirectory(t)
-	watcher := NewWatcher(dir, nil)
+	watcher := NewWatcher(dir)
 	defer os.RemoveAll(dir)
 
 	if len(watcher.filePaths) != 6 {
