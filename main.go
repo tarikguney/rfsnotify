@@ -7,21 +7,12 @@ import (
 	"path/filepath"
 )
 
-type Event int
-
-const (
-	Delete Event = iota
-	Create
-	Rename
-	Write
-)
-
 type Watcher struct {
-	Path      string
-	Recursive bool
-	Events    []Event
+	Path   string
+	Events chan fsnotify.Event
+	Errors chan error
 	// todo think about the usefulness of this backing slice. Because we can use fsnotify.Watcher internal backing slice.
-	filePaths map[string]bool
+	filePaths       map[string]bool
 	internalWatcher *fsnotify.Watcher
 }
 
@@ -31,8 +22,8 @@ func (w *Watcher) Include(paths ...string) {
 		w.filePaths = make(map[string]bool)
 	}
 
-	if w.internalWatcher == nil{
-		w.internalWatcher, _ = fsnotify.NewWatcher()
+	if w.internalWatcher == nil {
+		setInternalWatcher(w)
 	}
 
 	for _, newPath := range paths {
@@ -60,21 +51,20 @@ func (w *Watcher) Refresh() {
 
 // Creates a new Watcher object and initializes the internal watch list
 // based on the given path.
-func NewWatcher(path string, events []Event) *Watcher {
+func NewWatcher(path string) *Watcher {
 	var watcher = &Watcher{
-		Path:      path,
-		Events:    events,
+		Path:   path,
 	}
 
 	initFilePaths(watcher)
 
 	var fsWatcher, err = fsnotify.NewWatcher()
 
-	if err != nil{
+	if err != nil {
 		fmt.Print(err)
 	}
 
-	watcher.internalWatcher = fsWatcher
+	setInternalWatcher(watcher)
 
 	for path := range watcher.filePaths {
 		// todo handle error.
@@ -82,6 +72,12 @@ func NewWatcher(path string, events []Event) *Watcher {
 	}
 
 	return watcher
+}
+
+func setInternalWatcher(w *Watcher) {
+	w.internalWatcher, _ = fsnotify.NewWatcher()
+	w.Events = w.internalWatcher.Events
+	w.Errors = w.internalWatcher.Errors
 }
 
 func initFilePaths(w *Watcher) {
